@@ -30,10 +30,15 @@ type PlaybackEvent struct {
 	IncognitoMode         bool      `json:"incognito_mode"`
 }
 
-type AggregatedPlaybackEvent struct {
+type TrackAggregation struct {
 	// SpotifyTrackURI       *string `json:"spotify_track_uri"` this is the key, so it's not needed here
 	MsPlayed        int     `json:"ms_played"`
 	TrackName       *string `json:"track_name"`
 	AlbumArtistName *string `json:"album_artist_name"`
 	AlbumName       *string `json:"album_name"`
+}
+
+type ArtistAggregation struct {
+	MsPlayed   int     `json:"ms_played"`
+	ArtistName *string `json:"artist_name"`
 }

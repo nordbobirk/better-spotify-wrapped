@@ -20,7 +20,8 @@ func ParseData() {
 		log.Fatal("No data found in data directory")
 	}
 
-	aggregatedEvents := make(map[string]AggregatedPlaybackEvent)
+	aggregatedTracks := make(map[string]TrackAggregation)
+	aggregatedArtists := make(map[string]ArtistAggregation)
 
 	for _, entry := range entries {
 		if entry.IsDir() {
@@ -28,6 +29,10 @@ func ParseData() {
 		}
 
 		if entry.Name() == AggregatedTrackDataFile {
+			continue
+		}
+
+		if entry.Name() == AggregatedArtistDataFile {
 			continue
 		}
 
@@ -39,22 +44,29 @@ func ParseData() {
 			continue
 		}
 
-		parseFile(entry, aggregatedEvents)
+		parseFile(entry, aggregatedTracks, aggregatedArtists)
 	}
 
-	// write result to file
-	file, err := os.Create(DataDir + "/" + AggregatedTrackDataFile)
+	// write results to files
+	trackFile, trackFileErr := os.Create(DataDir + "/" + AggregatedTrackDataFile)
+	artistFile, artistFileErr := os.Create(DataDir + "/" + AggregatedArtistDataFile)
 
-	if err != nil {
-		log.Fatal(err)
+	if trackFileErr != nil {
+		log.Fatal(trackFileErr)
 	}
 
-	defer file.Close()
+	if artistFileErr != nil {
+		log.Fatal(artistFileErr)
+	}
 
-	json.NewEncoder(file).Encode(aggregatedEvents)
+	defer trackFile.Close()
+	defer artistFile.Close()
+
+	json.NewEncoder(artistFile).Encode(aggregatedArtists)
+	json.NewEncoder(trackFile).Encode(aggregatedTracks)
 }
 
-func parseFile(entry os.DirEntry, aggregatedEvents map[string]AggregatedPlaybackEvent) {
+func parseFile(entry os.DirEntry, aggregatedTracks map[string]TrackAggregation, aggregatedArtists map[string]ArtistAggregation) {
 	fmt.Println("Parsing file: ", entry.Name())
 	fileContent, err := os.ReadFile(DataDir + "/" + entry.Name())
 
@@ -70,27 +82,39 @@ func parseFile(entry os.DirEntry, aggregatedEvents map[string]AggregatedPlayback
 	}
 
 	for _, event := range events {
-		parseEvent(event, aggregatedEvents)
+		parseEvent(event, aggregatedTracks, aggregatedArtists)
 	}
 }
 
-func parseEvent(event PlaybackEvent, aggregatedEvents map[string]AggregatedPlaybackEvent) {
+func parseEvent(event PlaybackEvent, aggregatedTracks map[string]TrackAggregation, aggregatedArtists map[string]ArtistAggregation) {
 	if event.SpotifyTrackURI == nil {
 		// if the event does not correspond to a track we ignore it
 		return
 	}
 
-	if mapEvent, ok := aggregatedEvents[*event.SpotifyTrackURI]; ok {
+	if track, ok := aggregatedTracks[*event.SpotifyTrackURI]; ok {
 		// if the event already exists in the map we update the aggregated event
-		mapEvent.MsPlayed += event.MsPlayed
-		aggregatedEvents[*event.SpotifyTrackURI] = mapEvent
+		track.MsPlayed += event.MsPlayed
+		aggregatedTracks[*event.SpotifyTrackURI] = track
 	} else {
 		// if the event does not exist in the map we create a new aggregated event
-		aggregatedEvents[*event.SpotifyTrackURI] = AggregatedPlaybackEvent{
+		aggregatedTracks[*event.SpotifyTrackURI] = TrackAggregation{
 			MsPlayed:        event.MsPlayed,
 			TrackName:       event.TrackName,
 			AlbumArtistName: event.AlbumArtistName,
 			AlbumName:       event.AlbumName,
+		}
+	}
+
+	if artist, ok := aggregatedArtists[*event.AlbumArtistName]; ok {
+		// if the event already exists in the map we update the aggregated event
+		artist.MsPlayed += event.MsPlayed
+		aggregatedArtists[*event.AlbumArtistName] = artist
+	} else {
+		// if the event does not exist in the map we create a new aggregated event
+		aggregatedArtists[*event.AlbumArtistName] = ArtistAggregation{
+			MsPlayed:   event.MsPlayed,
+			ArtistName: event.AlbumArtistName,
 		}
 	}
 
