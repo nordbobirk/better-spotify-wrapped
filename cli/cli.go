@@ -13,5 +13,9 @@ func Run(args []string) {
 		Parse(args[2:])
 	case "favorite":
 		Favorite(args[2:])
+	case "top":
+		Top(args[2:])
+	default:
+		Help()
 	}
 }
