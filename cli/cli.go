@@ -1,12 +1,16 @@
 package cli
 
+import (
+	"strings"
+)
+
 // Run is the entrypoint for the CLI.
 func Run(args []string) {
 	if len(args) <= 1 {
 		Help()
 		return
 	}
-	switch args[1] {
+	switch strings.ToLower(args[1]) {
 	case "help":
 		Help()
 	case "parse":
@@ -15,6 +19,8 @@ func Run(args []string) {
 		Favorite(args[2:])
 	case "top":
 		Top(args[2:])
+	case "hate":
+		Hate(args[2:])
 	default:
 		Help()
 	}
