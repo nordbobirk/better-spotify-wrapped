@@ -1,6 +1,6 @@
 # better-spotify-wrapped
 
-A simple CLI tool that can parse extended lifetime listening data from Spotify [which can be downloaded here](https://www.spotify.com/us/account/privacy/). The data is parsed from raw listening history data to a JSON file containing aggregated listening data, which can then be queried for interesting insights into your listening.
+A simple CLI tool that can parse extended lifetime listening data from Spotify [which can be downloaded here](https://www.spotify.com/us/account/privacy/). The data is parsed from raw listening history data to JSON files containing aggregated listening data, which can then be queried for interesting insights into your listening.
 
 ##### Disclaimer: This tool was my first ever Go project. Do not expect it to be perfect (or to work for that matter).
 
@@ -9,8 +9,8 @@ A simple CLI tool that can parse extended lifetime listening data from Spotify [
 ## ✨ Features
 
 - Parse extended lifetime listening data from Spotify
-- Aggregate listening data into a JSON file
-- Query the JSON file for interesting insights
+- Aggregate listening data into JSON files
+- Query the JSON files for interesting insights
 
 ---
 
@@ -18,7 +18,11 @@ A simple CLI tool that can parse extended lifetime listening data from Spotify [
 
 1. Make sure you have [Go](https://golang.org/doc/install) installed.
 2. Clone the repository.
-3. build & run (TODO write this when the project is more than a hello world)
+3. Build into an executable.
+4. Run the executable to generate the data folder.
+5. Place Spotify lifetime listening files in the data folder.
+6. Run the parse command to generate aggregated data.
+7. Run commands for interesting insights.
 
 ---
 
@@ -34,6 +38,7 @@ wrapped [command] [options]
 - `favorite <artist|track>` - Show information about your favorite artist or track
 - `top <artist|track> <amount>` - Show the top tracks or artists by listening time
 - `hate <artist|track>` - Show information about your least favorite artist or track by listening time
+- `help` - Show help message
 
 ---
 
