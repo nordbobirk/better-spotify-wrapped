@@ -38,6 +38,7 @@ wrapped [command] [options]
 - `favorite <artist|track>` - Show information about your favorite artist or track
 - `top <artist|track> <amount>` - Show the top tracks or artists by listening time
 - `hate <artist|track>` - Show information about your least favorite artist or track by listening time
+- `count <artist|track>` - Show the number of different artists or tracks you have listened to
 - `help` - Show help message
 
 ---
