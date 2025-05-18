@@ -4,6 +4,7 @@ import (
 	"better-spotify-wrapped/internal"
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 // Top handles execution of the "top" CLI command.
@@ -20,7 +21,7 @@ func Top(args []string) {
 		return
 	}
 
-	switch args[0] {
+	switch strings.ToLower(args[0]) {
 	case "track":
 		internal.TopTracks(parsedAmount)
 	case "artist":

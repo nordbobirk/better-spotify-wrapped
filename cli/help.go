@@ -12,5 +12,6 @@ func Help() {
 	fmt.Println("  favorite <artist|track> - Show information about your favorite artist ortrack.")
 	fmt.Println("  top <artist|track> <amount> - Show the top artists or tracks by listening time.")
 	fmt.Println("  hate <artist|track> - Show information about your least favorite artist or track.")
+	fmt.Println("  count <artist|track> - Count the number of different artists or tracks you have listened to.")
 	// TODO: Birk extend this
 }

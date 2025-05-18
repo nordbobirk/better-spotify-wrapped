@@ -3,6 +3,7 @@ package cli
 import (
 	"better-spotify-wrapped/internal"
 	"fmt"
+	"strings"
 )
 
 // Favorite handles execution of the "favorite" CLI command.
@@ -12,7 +13,7 @@ func Favorite(args []string) {
 		return
 	}
 
-	switch args[0] {
+	switch strings.ToLower(args[0]) {
 	case "track":
 		internal.FavoriteTrack()
 	case "artist":

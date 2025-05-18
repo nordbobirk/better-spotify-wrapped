@@ -3,6 +3,7 @@ package cli
 import (
 	"better-spotify-wrapped/internal"
 	"fmt"
+	"strings"
 )
 
 // Hate handles execution of the "hate" CLI command.
@@ -12,7 +13,7 @@ func Hate(args []string) {
 		return
 	}
 
-	switch args[0] {
+	switch strings.ToLower(args[0]) {
 	case "artist":
 		internal.HateArtist()
 	case "track":
